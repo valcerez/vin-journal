@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "vin-journal",
-    "slug": "vin-journal",
-    "scheme": "vinjournal",
+    "name": "GéoPinard",
+    "slug": "geopinard",
+    "scheme": "geopinard",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -26,8 +26,8 @@
     },
     "web": {
       "favicon": "./assets/favicon.png",
-      "name": "Vin Journal",
-      "shortName": "VinJournal",
+      "name": "GéoPinard",
+      "shortName": "GéoPinard",
       "description": "Votre journal de dégustation de vins",
       "display": "standalone",
       "themeColor": "#ffffff",
