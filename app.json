@@ -32,7 +32,9 @@
       "display": "standalone",
       "themeColor": "#ffffff",
       "bundler": "metro",
-      "output": "single"
+      "output": "single",
+      "backgroundColor": "#ffffff",
+      "startUrl": "/"
     },
     "plugins": [
       "expo-web-browser"
