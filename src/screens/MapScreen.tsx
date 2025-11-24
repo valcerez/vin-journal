@@ -1,25 +1,13 @@
 import { useCallback, useState, useRef } from "react";
 import { View, Text, ActivityIndicator, StyleSheet, TouchableOpacity } from "react-native";
-import MapView, { Marker, Region, PROVIDER_GOOGLE } from "react-native-maps";
+import { Region } from "react-native-maps";
 import { useFocusEffect } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
 import { supabase } from "../lib/supabase";
 import { palette, radii, spacing, typography } from "../styles/theme";
 import { BottleCard } from "../components/BottleCard";
-import { mapStyle } from "../styles/mapStyle";
-
-type MapBottle = {
-  id: string;
-  name: string | null;
-  latitude: number | null;
-  longitude: number | null;
-  image_url: string | null;
-  vintage: string | null;
-  rating: number | null;
-  notes: string | null;
-  region: string | null;
-  location: string | null;
-};
+import { MapBottle } from "../types/bottle";
+import { WineMap, MapRef } from "../components/WineMap";
 
 const DEFAULT_REGION: Region = {
   latitude: 46.2276, // France center
@@ -32,7 +20,7 @@ export default function MapScreen() {
   const [points, setPoints] = useState<MapBottle[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedBottle, setSelectedBottle] = useState<MapBottle | null>(null);
-  const mapRef = useRef<MapView>(null);
+  const mapRef = useRef<MapRef>(null);
 
   const loadPoints = useCallback(async () => {
     setLoading(true);
@@ -56,7 +44,6 @@ export default function MapScreen() {
 
   const handleMarkerPress = (bottle: MapBottle) => {
     setSelectedBottle(bottle);
-    // Optional: Animate map to the selected marker
     mapRef.current?.animateToRegion({
       latitude: bottle.latitude!,
       longitude: bottle.longitude!,
@@ -82,29 +69,12 @@ export default function MapScreen() {
       </View>
 
       <View style={styles.mapWrapper}>
-        <MapView
+        <WineMap
           ref={mapRef}
-          style={StyleSheet.absoluteFillObject}
+          points={points}
+          onMarkerPress={handleMarkerPress}
           initialRegion={DEFAULT_REGION}
-          customMapStyle={mapStyle}
-          provider={PROVIDER_GOOGLE}
-          showsUserLocation={true}
-          showsCompass={false}
-          showsPointsOfInterest={false}
-        >
-          {points.map((point) => (
-            <Marker
-              key={point.id}
-              coordinate={{ latitude: point.latitude!, longitude: point.longitude! }}
-              onPress={() => handleMarkerPress(point)}
-            >
-              <View style={styles.markerContainer}>
-                <View style={styles.markerDot} />
-                <View style={styles.markerStem} />
-              </View>
-            </Marker>
-          ))}
-        </MapView>
+        />
 
         {/* Overlay for selected bottle */}
         {selectedBottle && (
@@ -208,23 +178,5 @@ const styles = StyleSheet.create({
     zIndex: 10,
     backgroundColor: palette.surface,
     borderRadius: radii.pill,
-  },
-  markerContainer: {
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  markerDot: {
-    width: 16,
-    height: 16,
-    borderRadius: 8,
-    backgroundColor: palette.accent,
-    borderWidth: 2,
-    borderColor: palette.primaryDark,
-  },
-  markerStem: {
-    width: 2,
-    height: 10,
-    backgroundColor: palette.accent,
-    marginTop: -2,
   },
 });

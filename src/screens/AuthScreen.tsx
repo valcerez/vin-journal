@@ -113,11 +113,7 @@ export default function AuthScreen() {
 
             {message ? <Text style={styles.message}>{message}</Text> : null}
 
-            {/* Debug helper for development */}
-            <Text style={styles.debugText}>
-              URL de redirection à ajouter dans Supabase :{'\n'}
-              {Linking.createURL("/")}
-            </Text>
+
 
             <View style={styles.divider}>
               <View style={styles.dividerLine} />

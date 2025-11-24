@@ -30,3 +30,16 @@ export type BottleInsertPayload = {
   latitude?: number | null;
   longitude?: number | null;
 };
+
+export type MapBottle = {
+  id: string;
+  name: string | null;
+  latitude: number | null;
+  longitude: number | null;
+  image_url: string | null;
+  vintage: string | null;
+  rating: number | null;
+  notes: string | null;
+  region: string | null;
+  location: string | null;
+};
