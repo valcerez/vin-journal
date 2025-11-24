@@ -5,7 +5,7 @@ import L from 'leaflet';
 import { MapBottle } from '../types/bottle';
 import { palette } from '../styles/theme';
 import { Region } from 'react-native-maps';
-import 'leaflet/dist/leaflet.css';
+
 
 export interface MapRef {
     animateToRegion: (region: Region, duration?: number) => void;
@@ -44,6 +44,12 @@ export const WineMap = forwardRef<MapRef, MapProps>(({ points, onMarkerPress, in
 
     return (
         <View style={styles.container}>
+            <link
+                rel="stylesheet"
+                href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+                integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+                crossOrigin=""
+            />
             <style>
                 {`
           .leaflet-container {
