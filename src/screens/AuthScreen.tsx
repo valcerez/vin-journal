@@ -42,22 +42,26 @@ export default function AuthScreen() {
     setMessage("");
     try {
       const redirectUrl = Linking.createURL("/");
-      console.log("Redirect URL:", redirectUrl); // Debug log
 
       const { data, error } = await supabase.auth.signInWithOAuth({
         provider,
         options: {
           redirectTo: redirectUrl,
-          skipBrowserRedirect: true,
+          skipBrowserRedirect: false, // Let Supabase handle the redirect on web
         },
       });
 
       if (error) throw error;
 
-      if (data?.url) {
+      // On native, we might need to handle the deep link manually if we used skipBrowserRedirect: true
+      // But for web PWA, we want the browser to redirect.
+      // If we are in a native app (not web), we might need the WebBrowser flow.
+      if (Platform.OS !== 'web' && data?.url) {
         const result = await WebBrowser.openAuthSessionAsync(data.url, redirectUrl);
         if (result.type === "success" && result.url) {
-          // ... existing logic
+          // The session is handled by the onAuthStateChange listener in App.tsx
+          // But we might need to parse the URL if Supabase doesn't auto-detect it from the deep link
+          // Usually, supabase.auth.getSession() or the listener picks it up.
         }
       }
     } catch (err: any) {
